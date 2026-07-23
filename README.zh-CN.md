@@ -71,6 +71,8 @@ ARCH=x86_64 MACOS_TARGET=12.0 ./macos/build.sh
 GitHub 仓库 -> Actions -> Build and Release -> Run workflow
 ```
 
+`release_tag` 留空时只上传 workflow artifact。填入 `v1.0.0` 这样的版本号时，会创建 GitHub Release，并把构建文件挂到 Release 里。
+
 创建 Release 编译：
 
 ```bash

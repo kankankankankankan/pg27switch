@@ -67,6 +67,8 @@ Run a manual cloud build:
 GitHub repo -> Actions -> Build and Release -> Run workflow
 ```
 
+Leave `release_tag` empty to upload only a workflow artifact. Set `release_tag` to a version such as `v1.0.0` to create a GitHub Release with the built files attached.
+
 Create a Release build:
 
 ```bash
