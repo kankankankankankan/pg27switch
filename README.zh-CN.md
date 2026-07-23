@@ -57,6 +57,36 @@ ARCH=arm64 MACOS_TARGET=12.0 ./macos/build.sh
 ARCH=x86_64 MACOS_TARGET=12.0 ./macos/build.sh
 ```
 
+## 云编译
+
+项目已包含 GitHub Actions workflow：
+
+```text
+.github/workflows/release.yml
+```
+
+手动云编译：
+
+```text
+GitHub 仓库 -> Actions -> Build and Release -> Run workflow
+```
+
+创建 Release 编译：
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+workflow 会分别编译 `arm64` 和 `x86_64`，再合并成 macOS universal 二进制，并上传：
+
+```text
+pg27switch-macos-universal.zip
+pg27switch-macos-universal.zip.sha256
+```
+
+推送 tag 后会自动创建 GitHub Release。
+
 ## 运行
 
 只预览 HUD，不切换输入源：

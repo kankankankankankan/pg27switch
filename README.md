@@ -57,6 +57,32 @@ ARCH=arm64 MACOS_TARGET=12.0 ./macos/build.sh
 ARCH=x86_64 MACOS_TARGET=12.0 ./macos/build.sh
 ```
 
+## Cloud Build
+
+This repository includes a GitHub Actions workflow at `.github/workflows/release.yml`.
+
+Run a manual cloud build:
+
+```text
+GitHub repo -> Actions -> Build and Release -> Run workflow
+```
+
+Create a Release build:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The workflow builds both `arm64` and `x86_64`, combines them into a universal macOS binary, then uploads:
+
+```text
+pg27switch-macos-universal.zip
+pg27switch-macos-universal.zip.sha256
+```
+
+Tagged builds automatically create a GitHub Release.
+
 ## Run
 
 Preview the HUD without switching:
