@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PG27UCDM HUD Preview</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --text: rgba(255, 255, 255, 0.94);
+      --muted: rgba(255, 255, 255, 0.62);
+      --panel: rgba(42, 44, 50, 0.58);
+      --line: rgba(255, 255, 255, 0.18);
+      --shadow: rgba(0, 0, 0, 0.42);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(86, 128, 184, 0.72), transparent 34%),
+        radial-gradient(circle at 84% 16%, rgba(112, 88, 149, 0.64), transparent 30%),
+        linear-gradient(135deg, #111318 0%, #202631 52%, #15191f 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: radial-gradient(circle at center, black, transparent 72%);
+    }
+
+    .stage {
+      width: min(100vw, 1200px);
+      height: min(100vh, 760px);
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .menubar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.76);
+      background: rgba(18, 20, 24, 0.34);
+      backdrop-filter: blur(22px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hud {
+      width: 500px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      border-radius: 34px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 34px 90px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      backdrop-filter: blur(34px) saturate(1.55);
+      -webkit-backdrop-filter: blur(34px) saturate(1.55);
+    }
+
+    .icon {
+      width: 44px;
+      height: 34px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .target {
+      margin: 0;
+      color: var(--text);
+      font-size: 38px;
+      font-weight: 650;
+      line-height: 1.08;
+    }
+
+    .count {
+      color: var(--text);
+      font-size: 80px;
+      font-weight: 750;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 12px;
+      background: rgba(18, 20, 24, 0.54);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(20px);
+    }
+
+    button {
+      min-width: 82px;
+      height: 34px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.14);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:hover,
+    button.active {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .red {
+      color: #ff6961;
+    }
+
+    @media (max-width: 620px) {
+      .hud {
+        width: calc(100vw - 40px);
+        height: 280px;
+      }
+
+      .target {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="menubar">
+    <span>PG27UCDM Preview</span>
+    <span>17:16</span>
+  </div>
+
+  <main class="stage">
+    <section class="hud" aria-label="HUD preview">
+      <svg class="icon" id="icon" viewBox="0 0 64 25" aria-hidden="true">
+        <path d="M5.5 1H58.5C61.6 1 64 3.4 64 6.5V13.8C64 16.5 61.5 17.6 58.7 18.2C55 19 54.9 21.3 52.2 23C51.2 23.6 50.2 24 48.8 24H15.2C13.8 24 12.8 23.6 11.8 23C9.1 21.3 9 19 5.3 18.2C2.5 17.6 0 16.5 0 13.8V6.5C0 3.4 2.4 1 5.5 1ZM6.4 4.2C4.6 4.2 3.3 5.5 3.3 7.3V13.2C3.3 13.8 3.8 14.2 4.6 14.4C9.9 15.1 10.1 18.1 13.5 20.5C14.1 20.8 14.8 21 15.6 21H48.4C49.2 21 49.9 20.8 50.5 20.5C53.9 18.1 54.1 15.1 59.4 14.4C60.2 14.2 60.7 13.8 60.7 13.2V7.3C60.7 5.5 59.4 4.2 57.6 4.2H6.4Z" fill="currentColor" fill-rule="evenodd"/>
+        <path d="M18.5 11.4H45.5V14.2H18.5ZM18.5 9.4H20.2V11.6H18.5ZM21.2 9.4H22.9V11.6H21.2ZM23.9 9.4H25.6V11.6H23.9ZM26.6 9.4H28.3V11.6H26.6ZM29.3 9.4H31V11.6H29.3ZM32 9.4H33.7V11.6H32ZM34.7 9.4H36.4V11.6H34.7ZM37.4 9.4H39.1V11.6H37.4ZM40.1 9.4H41.8V11.6H40.1ZM42.8 9.4H44.5V11.6H42.8ZM18.5 14.1H20.2V16.3H18.5ZM21.2 14.1H22.9V16.3H21.2ZM23.9 14.1H25.6V16.3H23.9ZM26.6 14.1H28.3V16.3H26.6ZM29.3 14.1H31V16.3H29.3ZM32 14.1H33.7V16.3H32ZM34.7 14.1H36.4V16.3H34.7ZM37.4 14.1H39.1V16.3H37.4ZM40.1 14.1H41.8V16.3H40.1ZM42.8 14.1H44.5V16.3H42.8Z" fill="currentColor"/>
+      </svg>
+      <p class="label" id="label">切换屏幕输入源</p>
+      <h1 class="target" id="target">HDMI 1</h1>
+      <div class="count" id="count">3</div>
+      <p class="hint" id="hint">ESC 取消</p>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Preview controls">
+    <button type="button" data-state="3" class="active">倒计时 3</button>
+    <button type="button" data-state="2">倒计时 2</button>
+    <button type="button" data-state="1">倒计时 1</button>
+    <button type="button" data-state="cancel">取消</button>
+  </nav>
+
+  <script>
+    const label = document.getElementById("label");
+    const count = document.getElementById("count");
+    const hint = document.getElementById("hint");
+    const buttons = Array.from(document.querySelectorAll("button"));
+
+    function setState(state) {
+      buttons.forEach((button) => button.classList.toggle("active", button.dataset.state === state));
+      count.className = "count";
+
+      if (state === "cancel") {
+        label.textContent = "已取消";
+        count.textContent = "×";
+        count.classList.add("red");
+        hint.textContent = "未切换屏幕输入源";
+        return;
+      }
+
+      label.textContent = "切换屏幕输入源";
+      count.textContent = state;
+      hint.textContent = "ESC 取消";
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => setState(button.dataset.state));
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setState("cancel");
+      }
+    });
+  </script>
+</body>
+</html>

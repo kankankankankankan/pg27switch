@@ -1,0 +1,11 @@
+.DS_Store
+build/
+macos/launchers/*.command
+*.log
+*.xcactivitylog
+*.swp
+*.tmp
+*.bak
+
+# Local notes and generated artifacts
+PG27UCDM_Input_Switcher_Development_Document.docx
