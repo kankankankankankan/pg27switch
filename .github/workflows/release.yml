@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: "Optional release tag to create, for example v1.0.0"
-        required: false
+        description: "Release tag to create or update, for example v1.0.0"
+        required: true
         type: string
   push:
     tags:
@@ -59,7 +59,7 @@ jobs:
             dist/pg27switch-macos-universal.zip.sha256
 
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG_INPUT: ${{ inputs.release_tag }}
@@ -67,6 +67,11 @@ jobs:
           release_tag="${GITHUB_REF_NAME}"
           if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
             release_tag="${RELEASE_TAG_INPUT}"
+          fi
+
+          if [ -z "${release_tag}" ]; then
+            echo "release_tag is required for manual runs."
+            exit 1
           fi
 
           if gh release view "${release_tag}" >/dev/null 2>&1; then

@@ -67,7 +67,7 @@ Run a manual cloud build:
 GitHub repo -> Actions -> Build and Release -> Run workflow
 ```
 
-Leave `release_tag` empty to upload only a workflow artifact. Set `release_tag` to a version such as `v1.0.0` to create a GitHub Release with the built files attached.
+Set `release_tag` to a version such as `v1.0.0`. The workflow creates or updates that GitHub Release and attaches the built files.
 
 Create a Release build:
 
@@ -83,7 +83,7 @@ pg27switch-macos-universal.zip
 pg27switch-macos-universal.zip.sha256
 ```
 
-Tagged builds automatically create a GitHub Release.
+Tagged builds and manual runs with `release_tag` create a GitHub Release.
 
 ## Run
 

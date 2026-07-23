@@ -71,7 +71,7 @@ ARCH=x86_64 MACOS_TARGET=12.0 ./macos/build.sh
 GitHub 仓库 -> Actions -> Build and Release -> Run workflow
 ```
 
-`release_tag` 留空时只上传 workflow artifact。填入 `v1.0.0` 这样的版本号时，会创建 GitHub Release，并把构建文件挂到 Release 里。
+`release_tag` 填入 `v1.0.0` 这样的版本号。workflow 会创建或更新这个 GitHub Release，并把构建文件挂到 Release 里。
 
 创建 Release 编译：
 
@@ -87,7 +87,7 @@ pg27switch-macos-universal.zip
 pg27switch-macos-universal.zip.sha256
 ```
 
-推送 tag 后会自动创建 GitHub Release。
+推送 tag，或手动运行时填写 `release_tag`，都会创建 GitHub Release。
 
 ## 运行
 
