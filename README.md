@@ -4,6 +4,10 @@
 
 `pg27switch` switches the input source of the ASUS ROG Swift OLED PG27UCDM with a native countdown HUD.
 
+The program displays the target input and countdown on every connected display. Press `ESC` to cancel before switching. macOS delegates DDC control to BetterDisplay. Windows uses the built-in monitor configuration API and does not require BetterDisplay or ControlMyMonitor.
+
+The current Windows release is a self-contained x64 WPF executable. It supports per-launch theme selection and is compiled as a GUI application for Stream Deck use.
+
 ## Platforms
 
 | Platform | DDC backend | Theme control |
@@ -43,6 +47,31 @@ tc, typec, usb-c, usbc   Type-C       26
 ```
 
 Use `--preview` to show the HUD without changing the monitor input. The default countdown is 3 seconds. Use `--seconds 1` through `--seconds 30` to change it.
+
+## Parameters
+
+Common parameters:
+
+| Parameter | Description |
+| --- | --- |
+| `INPUT` | Input alias such as `dp`, `hdmi1`, or `usbc`. |
+| `--input`, `-i` | Same as positional `INPUT`. |
+| `--preview` | Show the HUD and skip input switching. |
+| `--seconds N` | Countdown from 1 to 30 seconds. Default: 3. |
+| `--name NAME` | Custom name shown in the HUD. |
+| `--value VALUE` | Raw DDC value: 15, 17, 18, or 26. Required with `--name` for real switching. |
+| `--help`, `-h` | Show command help. |
+| `--version`, `-v` | Show the program version. |
+
+Windows-only parameters:
+
+| Parameter | Description |
+| --- | --- |
+| `--theme system\|dark\|light` | Follow Windows or force a HUD theme. |
+| `--list` | List physical monitors and current input values. |
+| `--monitor INDEX` | Select a monitor index from `--list`. |
+
+macOS uses BetterDisplay for DDC. Windows uses the Windows Monitor Configuration API directly. `--theme`, `--list`, and `--monitor` are Windows features.
 
 ## Stream Deck
 

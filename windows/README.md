@@ -31,6 +31,29 @@ Type-C       26
 
 `--preview` skips DDC switching. Without an input after `--preview`, DisplayPort is used. The default countdown is 3 seconds.
 
+## Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `INPUT` | `dp`, `hdmi1`, `hdmi2`, or `usbc`. |
+| `--input INPUT` | Input alias, equivalent to positional `INPUT`. |
+| `--preview` | Show the HUD and skip DDC switching. Without `INPUT`, defaults to DisplayPort. |
+| `--seconds N` | Countdown from 1 to 30 seconds. Default: 3. |
+| `--theme system\|dark\|light` | Follow the Windows app theme or force a theme. |
+| `--list` | List physical monitor handles and current input values. |
+| `--monitor INDEX` | Select a monitor from `--list`. |
+| `--name NAME` | Custom HUD label. |
+| `--value VALUE` | Raw DDC value: 15, 17, 18, or 26. Required for real switching with `--name`. |
+| `--help`, `-h` | Show help. |
+| `--version`, `-v` | Show version. |
+
+Custom input example:
+
+```powershell
+pg27switch.exe --name "HDMI 1" --value 17 --seconds 5
+pg27switch.exe --preview --name "Office PC" --seconds 3 --theme light
+```
+
 ## Theme and Countdown
 
 ```powershell

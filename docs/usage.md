@@ -43,6 +43,26 @@ pg27switch --help
 
 `--preview` does not call BetterDisplay. `--seconds` accepts values from 1 to 30 and defaults to 3.
 
+## Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `INPUT` | `dp`, `hdmi1`, `hdmi2`, or `usbc`. |
+| `--input INPUT` | Input alias, equivalent to positional `INPUT`. |
+| `--preview` | Show the HUD and skip BetterDisplay. |
+| `--seconds N` | Countdown from 1 to 30 seconds. Default: 3. |
+| `--name NAME` | Custom name shown in the HUD. Required without an input alias. |
+| `--value VALUE` | Raw DDC value: 15, 17, 18, or 26. Required for real switching with `--name`. |
+| `--betterdisplay PATH` | Override the BetterDisplay executable path. |
+| `--help`, `-h` | Show help. |
+
+Custom input example:
+
+```bash
+pg27switch --name "HDMI 1" --value 17 --seconds 5
+pg27switch --preview --name "Office PC" --seconds 3
+```
+
 For a custom BetterDisplay path:
 
 ```bash

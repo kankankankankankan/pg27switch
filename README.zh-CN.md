@@ -4,6 +4,10 @@
 
 `pg27switch` 用于切换 ASUS ROG Swift OLED PG27UCDM 的输入源，并显示带倒计时的原生 HUD。
 
+程序会在每个已连接显示器上显示目标输入和倒计时，倒计时期间按 `ESC` 可以取消。macOS 通过 BetterDisplay 控制 DDC，Windows 直接调用显示器配置 API，不依赖 BetterDisplay 或 ControlMyMonitor。
+
+当前 Windows 版本是自包含的 x64 WPF 程序，支持按启动参数选择主题，并按 GUI 程序编译，适合 Stream Deck 调用。
+
 ## 平台
 
 | 平台 | DDC 后端 | 主题 |
@@ -43,6 +47,31 @@ tc, typec, usb-c, usbc   Type-C       26
 ```
 
 `--preview` 只显示 HUD，不切换显示器输入源。默认倒计时为 3 秒，可使用 `--seconds 1` 到 `--seconds 30` 调整。
+
+## 命令参数
+
+通用参数：
+
+| 参数 | 说明 |
+| --- | --- |
+| `INPUT` | 输入源别名，例如 `dp`、`hdmi1`、`usbc`。 |
+| `--input`、`-i` | 与位置参数 `INPUT` 相同。 |
+| `--preview` | 只显示 HUD，不执行输入切换。 |
+| `--seconds N` | 倒计时 1 到 30 秒，默认 3 秒。 |
+| `--name NAME` | 自定义 HUD 中显示的名称。 |
+| `--value VALUE` | 原始 DDC 值：15、17、18、26。使用 `--name` 实际切换时必须提供。 |
+| `--help`、`-h` | 显示帮助。 |
+| `--version`、`-v` | 显示版本。 |
+
+Windows 专用参数：
+
+| 参数 | 说明 |
+| --- | --- |
+| `--theme system\|dark\|light` | 跟随 Windows 或强制指定 HUD 主题。 |
+| `--list` | 列出物理显示器和当前输入值。 |
+| `--monitor INDEX` | 使用 `--list` 中的显示器索引。 |
+
+macOS 通过 BetterDisplay 发送 DDC 命令，Windows 直接使用 Windows Monitor Configuration API。`--theme`、`--list`、`--monitor` 仅适用于 Windows。
 
 ## Stream Deck
 
