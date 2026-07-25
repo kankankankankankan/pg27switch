@@ -13,7 +13,7 @@ public partial class HudWindow : Window
 
     private readonly HudPalette _palette;
 
-    public HudWindow(InputSource source, Forms.Screen screen, HudTheme theme)
+    internal HudWindow(InputSource source, Forms.Screen screen, HudTheme theme)
     {
         InitializeComponent();
 
