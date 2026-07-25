@@ -92,7 +92,7 @@ public partial class HudWindow : Window
         Panel.Background = _palette.PanelFill;
         Panel.BorderBrush = _palette.Border;
         InnerHighlight.BorderBrush = _palette.InnerHighlight;
-        HeaderFill.Background = _palette.HeaderFill;
+        HeaderFill.Fill = _palette.HeaderFill;
         TopAccent.Background = _palette.Accent;
         HeaderLine.Fill = _palette.QuietLine;
         HeaderChevrons.Fill = _palette.Chevron;

@@ -48,16 +48,19 @@
                         BorderBrush="#08FFFFFF"
                         IsHitTestVisible="False"/>
 
-                <Border x:Name="HeaderFill"
-                        Height="34"
-                        VerticalAlignment="Top"
-                        CornerRadius="20,20,0,0"
-                        Background="#18EB141C"/>
+                <Path x:Name="HeaderFill"
+                      Data="M0,34 L0,20 A20,20 0 0 1 20,0 L480,0 A20,20 0 0 1 500,20 L500,34 Z"
+                      Fill="#18EB141C"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      IsHitTestVisible="False"/>
 
                 <Border x:Name="TopAccent"
+                        Width="460"
                         Height="3"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Top"
-                        CornerRadius="20,20,0,0"
+                        CornerRadius="0"
                         Background="#DB1219"/>
 
                 <Rectangle x:Name="HeaderLine"
