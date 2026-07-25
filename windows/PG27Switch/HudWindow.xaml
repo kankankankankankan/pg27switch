@@ -37,15 +37,28 @@
                 BorderBrush="#404244"
                 BorderThickness="1">
             <Grid ClipToBounds="True">
+                <Border x:Name="InnerHighlight"
+                        Width="498"
+                        Height="298"
+                        CornerRadius="19"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        BorderThickness="1"
+                        Background="Transparent"
+                        BorderBrush="#08FFFFFF"
+                        IsHitTestVisible="False"/>
+
                 <Border x:Name="HeaderFill"
                         Height="34"
                         VerticalAlignment="Top"
+                        CornerRadius="20,20,0,0"
                         Background="#18EB141C"/>
 
-                <Rectangle x:Name="TopAccent"
-                           Height="3"
-                           VerticalAlignment="Top"
-                           Fill="#DB1219"/>
+                <Border x:Name="TopAccent"
+                        Height="3"
+                        VerticalAlignment="Top"
+                        CornerRadius="20,20,0,0"
+                        Background="#DB1219"/>
 
                 <Rectangle x:Name="HeaderLine"
                            Height="1"
@@ -59,8 +72,8 @@
                          Height="34"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Top"
-                         Margin="0,0,0,0">
-                    <Canvas x:Name="IconCanvas" Width="24" Height="24"/>
+                         Margin="0,1,0,0">
+                         <Canvas x:Name="IconCanvas" Width="24" Height="24"/>
                 </Viewbox>
 
                 <Canvas IsHitTestVisible="False">

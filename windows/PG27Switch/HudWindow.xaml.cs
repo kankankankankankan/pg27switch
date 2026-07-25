@@ -91,8 +91,9 @@ public partial class HudWindow : Window
     {
         Panel.Background = _palette.PanelFill;
         Panel.BorderBrush = _palette.Border;
+        InnerHighlight.BorderBrush = _palette.InnerHighlight;
         HeaderFill.Background = _palette.HeaderFill;
-        TopAccent.Fill = _palette.Accent;
+        TopAccent.Background = _palette.Accent;
         HeaderLine.Fill = _palette.QuietLine;
         HeaderChevrons.Fill = _palette.Chevron;
         MicroGrid.Stroke = _palette.MicroGrid;
@@ -173,6 +174,7 @@ public partial class HudWindow : Window
 internal sealed record HudPalette(
     WpfMedia.Brush PanelFill,
     WpfMedia.Brush Border,
+    WpfMedia.Brush InnerHighlight,
     WpfMedia.Brush PrimaryText,
     WpfMedia.Brush SecondaryText,
     WpfMedia.Brush CancelText,
@@ -198,7 +200,8 @@ internal sealed record HudPalette(
         return isLight
             ? new HudPalette(
                 BrushFrom("#FAF2F2F3"),
-                BrushFrom("#4DBD0F14"),
+                BrushFrom("#3DBD0F14"),
+                BrushFrom("#C7FFFFFF"),
                 BrushFrom("#E0131213"),
                 BrushFrom("#8C131213"),
                 BrushFrom("#DBB80F14"),
@@ -214,7 +217,8 @@ internal sealed record HudPalette(
                 BrushFrom("#11000000"))
             : new HudPalette(
                 BrushFrom("#FB0F0F10"),
-                BrushFrom("#75EB141C"),
+                BrushFrom("#4DEB141C"),
+                BrushFrom("#08FFFFFF"),
                 BrushFrom("#F2FFFFFF"),
                 BrushFrom("#9EFFFFFF"),
                 BrushFrom("#EAEB141C"),
