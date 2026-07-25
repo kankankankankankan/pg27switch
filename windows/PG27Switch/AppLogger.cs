@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PG27Switch;
 
 internal static class AppLogger
