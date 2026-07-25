@@ -6,7 +6,8 @@ internal sealed record CliOptions(
     bool ListOnly,
     int? MonitorIndex,
     int Seconds,
-    bool ShowHelp);
+    bool ShowHelp,
+    bool ShowVersion);
 
 internal static class CliParser
 {
@@ -35,6 +36,7 @@ Options:
   --value VALUE            Raw DDC value for VCP 0x60.
   --seconds N              Countdown seconds, 1 to 30. Default: 3.
   --preview                Show the HUD only and skip DDC switching.
+  --version                Show version.
   -h, --help               Show this help.
 """;
 
@@ -55,7 +57,9 @@ Options:
             {
                 case "-h":
                 case "--help":
-                    return new CliOptions(null, false, false, null, seconds, true);
+                    return new CliOptions(null, false, false, null, seconds, true, false);
+                case "--version":
+                    return new CliOptions(null, false, false, null, seconds, false, true);
                 case "--preview":
                     previewOnly = true;
                     break;
@@ -111,7 +115,7 @@ Options:
             throw new ArgumentException("Missing input.");
         }
 
-        return new CliOptions(source, previewOnly, listOnly, monitorIndex, seconds, false);
+        return new CliOptions(source, previewOnly, listOnly, monitorIndex, seconds, false, false);
     }
 
     private static string RequireValue(string[] args, ref int index, string key)

@@ -1,4 +1,5 @@
 using Forms = System.Windows.Forms;
+using System.Reflection;
 using Wpf = System.Windows;
 
 namespace PG27Switch;
@@ -10,12 +11,18 @@ internal static class Program
     {
         try
         {
-            AppLogger.Info($"Started with args: {string.Join(" ", args)}");
+            AppLogger.Info($"Started pg27switch {AppVersion.Text} with args: {string.Join(" ", args)}");
             var options = CliParser.Parse(args);
             if (options.ShowHelp)
             {
                 ConsoleHelper.EnsureConsole();
                 Console.WriteLine(CliParser.Usage);
+                return 0;
+            }
+            if (options.ShowVersion)
+            {
+                ConsoleHelper.EnsureConsole();
+                Console.WriteLine(AppVersion.Text);
                 return 0;
             }
 
@@ -54,6 +61,14 @@ internal static class Program
             return 64;
         }
     }
+}
+
+internal static class AppVersion
+{
+    public static string Text =>
+        typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+        ?? typeof(Program).Assembly.GetName().Version?.ToString()
+        ?? "unknown";
 }
 
 internal sealed class CountdownRunner
