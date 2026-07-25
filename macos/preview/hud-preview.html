@@ -3,13 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PG27UCDM HUD Preview</title>
+  <title>PG27UCDM ROG HUD Preview</title>
   <style>
     :root {
-      color-scheme: dark;
-      --text: rgba(255, 255, 255, 0.94);
-      --muted: rgba(255, 255, 255, 0.62);
+      color-scheme: dark light;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      --rog-red: #eb141c;
+      --dark-panel: rgba(15, 15, 16, 0.985);
+      --dark-text: rgba(255, 255, 255, 0.95);
+      --dark-muted: rgba(255, 255, 255, 0.62);
+      --light-panel: rgba(242, 242, 243, 0.98);
+      --light-text: rgba(19, 18, 19, 0.88);
+      --light-muted: rgba(19, 18, 19, 0.55);
+      --dark-gold: rgba(209, 168, 92, 0.48);
+      --light-gold: rgba(168, 128, 56, 0.36);
     }
 
     * {
@@ -19,37 +26,28 @@
     body {
       margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
       overflow: hidden;
+      color: white;
       background:
-        linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
-        radial-gradient(circle at 18% 18%, rgba(88, 116, 146, 0.34), transparent 32%),
-        radial-gradient(circle at 86% 12%, rgba(82, 69, 102, 0.26), transparent 30%),
-        linear-gradient(135deg, #151a21 0%, #222833 46%, #171b21 100%);
-      background-size: 56px 56px, 56px 56px, auto, auto, auto;
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(135deg, #07080a 0%, #14161b 48%, #202329 100%);
+      background-size: 48px 48px, 48px 48px, auto;
     }
 
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: rgba(3, 5, 8, 0.24);
+      background:
+        radial-gradient(circle at 18% 22%, rgba(235, 20, 28, 0.18), transparent 28%),
+        radial-gradient(circle at 76% 12%, rgba(255, 255, 255, 0.10), transparent 22%);
       pointer-events: none;
-    }
-
-    .stage {
-      width: min(100vw, 1280px);
-      height: min(100vh, 760px);
-      position: relative;
-      display: grid;
-      place-items: center;
-      padding: 80px 40px 104px;
     }
 
     .menubar {
       position: fixed;
+      z-index: 2;
       top: 0;
       left: 0;
       right: 0;
@@ -58,253 +56,414 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 18px;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.76);
-      background: rgba(18, 20, 24, 0.34);
-      backdrop-filter: blur(22px);
+      color: rgba(255, 255, 255, 0.78);
+      background: rgba(8, 9, 11, 0.60);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
     }
 
-    .variants {
+    .stage {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+      place-items: center;
+      padding: 74px 34px 102px;
+    }
+
+    .themes {
       width: min(100%, 1120px);
-      align-items: end;
-    }
-
-    .variant {
-      min-width: 0;
       display: grid;
-      gap: 12px;
-      justify-items: center;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 30px;
+      align-items: center;
     }
 
-    .variant-title {
+    .theme {
+      display: grid;
+      justify-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .theme-title {
       margin: 0;
+      color: rgba(255, 255, 255, 0.56);
       font-size: 13px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.48);
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .hud-wrap {
+      width: min(100%, 500px);
+      padding: 32px;
+      filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.28));
     }
 
     .hud {
-      width: min(100%, 352px);
+      position: relative;
+      width: 100%;
       aspect-ratio: 5 / 3;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 13px;
-      background: rgba(42, 44, 50, 0.56);
-      border: 1px solid rgba(255, 255, 255, 0.17);
-      backdrop-filter: blur(34px) saturate(1.38);
-      -webkit-backdrop-filter: blur(34px) saturate(1.38);
-    }
-
-    .variant[data-style="soft"] .hud {
-      border-radius: 28px;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 20px 48px rgba(0, 0, 0, 0.32);
-    }
-
-    .variant[data-style="balanced"] .hud {
-      border-radius: 24px;
-      background: rgba(36, 38, 43, 0.62);
-      border-color: rgba(255, 255, 255, 0.14);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        0 16px 36px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(0, 0, 0, 0.1);
-    }
-
-    .variant[data-style="compact"] .hud {
+      gap: 11px;
+      overflow: hidden;
       border-radius: 20px;
-      background: rgba(30, 32, 36, 0.7);
-      border-color: rgba(255, 255, 255, 0.12);
+      background: var(--panel);
+      border: 1px solid var(--border);
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        0 12px 28px rgba(0, 0, 0, 0.28);
+        inset 0 1px 0 var(--inner),
+        0 16px 36px var(--shadow);
+    }
+
+    .hud::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 34px;
+      background:
+        linear-gradient(var(--accent), var(--accent)) top left / 100% 3px no-repeat,
+        linear-gradient(var(--quiet), var(--quiet)) bottom 0 left 92px / calc(100% - 184px) 1px no-repeat,
+        var(--header);
+    }
+
+    .hud::after {
+      content: "";
+      position: absolute;
+      top: 15px;
+      left: 18px;
+      width: 38px;
+      height: 8px;
+      background:
+        linear-gradient(135deg, transparent 0 32%, color-mix(in srgb, var(--accent), transparent 42%) 32% 50%, transparent 50%) 0 0 / 12px 8px repeat-x;
+    }
+
+    .hud .header-bracket {
+      position: absolute;
+      top: 14px;
+      right: 10px;
+      width: 48px;
+      height: 14px;
+      color: var(--quiet);
+      pointer-events: none;
+    }
+
+    .hud .gold-ticks {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hud .gold-ticks::before,
+    .hud .gold-ticks::after {
+      content: "";
+      position: absolute;
+      right: 28px;
+      width: 34px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hud .gold-ticks::before {
+      top: 17px;
+      width: 40px;
+    }
+
+    .hud .gold-ticks::after {
+      bottom: 22px;
+    }
+
+    .hud .edition-strip {
+      position: absolute;
+      left: 50%;
+      bottom: 11px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 12px;
+      color: var(--bottom-mark);
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1;
+      opacity: 0.48;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .edition-strip .flow {
+      color: currentColor;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .edition-strip .dots {
+      width: 34px;
+      height: 10px;
+      opacity: 0.62;
+      background-image: radial-gradient(currentColor 1px, transparent 1.4px);
+      background-size: 6px 5px;
+    }
+
+    .edition-strip .hatch {
+      width: 24px;
+      height: 10px;
+      opacity: 0.62;
+      background: repeating-linear-gradient(45deg, currentColor 0 3px, transparent 3px 6px);
+    }
+
+    .edition-strip .scan {
+      width: 32px;
+      height: 8px;
+      opacity: 0.50;
+      background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 5px);
+    }
+
+    .hud .side-rail {
+      position: absolute;
+      top: 56px;
+      right: 24px;
+      width: 1px;
+      height: 52px;
+      opacity: 0.18;
+      background: var(--accent);
+      pointer-events: none;
+    }
+
+    .hud .side-rail::before,
+    .hud .side-rail::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      width: 18px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hud .side-rail::before {
+      top: 0;
+    }
+
+    .hud .side-rail::after {
+      bottom: 0;
+    }
+
+    .hud .micro-grid {
+      position: absolute;
+      left: 26px;
+      top: 62px;
+      width: 36px;
+      height: 26px;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(var(--quiet) 1px, transparent 1px),
+        linear-gradient(90deg, var(--quiet) 1px, transparent 1px);
+      background-size: 9px 9px;
+      pointer-events: none;
+    }
+
+    .hud .corner-lines {
+      position: absolute;
+      inset: 18px 24px 20px;
+      border: 0 solid transparent;
+      pointer-events: none;
+    }
+
+    .corner-lines::before,
+    .corner-lines::after {
+      content: "";
+      position: absolute;
+      width: 54px;
+      height: 28px;
+      opacity: 0.38;
+    }
+
+    .corner-lines::before {
+      left: 0;
+      bottom: 0;
+      border-left: 2px solid var(--quiet);
+      border-bottom: 2px solid var(--quiet);
+    }
+
+    .corner-lines::after {
+      right: 0;
+      bottom: 0;
+      border-right: 2px solid var(--quiet);
+      border-bottom: 2px solid var(--quiet);
+    }
+
+    .dark {
+      --panel: var(--dark-panel);
+      --text: var(--dark-text);
+      --muted: var(--dark-muted);
+      --border: rgba(235, 20, 28, 0.46);
+      --inner: rgba(255, 255, 255, 0.045);
+      --shadow: rgba(0, 0, 0, 0.32);
+      --accent: rgba(235, 20, 28, 0.86);
+      --header: rgba(235, 20, 28, 0.095);
+      --quiet: rgba(255, 255, 255, 0.075);
+      --gold: var(--dark-gold);
+      --bottom-mark: rgba(255, 255, 255, 0.18);
+      --icon: rgba(235, 20, 28, 0.88);
+      --cancel: rgba(235, 20, 28, 0.92);
+    }
+
+    .light {
+      --panel: var(--light-panel);
+      --text: var(--light-text);
+      --muted: var(--light-muted);
+      --border: rgba(189, 15, 20, 0.30);
+      --inner: rgba(255, 255, 255, 0.78);
+      --shadow: rgba(0, 0, 0, 0.17);
+      --accent: rgba(189, 15, 20, 0.64);
+      --header: rgba(189, 15, 20, 0.060);
+      --quiet: rgba(0, 0, 0, 0.080);
+      --gold: var(--light-gold);
+      --bottom-mark: rgba(0, 0, 0, 0.14);
+      --icon: rgba(189, 15, 20, 0.78);
+      --cancel: rgba(184, 15, 20, 0.86);
     }
 
     .icon {
-      width: 44px;
-      height: 34px;
-      color: rgba(255, 255, 255, 0.88);
+      position: absolute;
+      z-index: 2;
+      top: 8px;
+      left: 50%;
+      width: 28px;
+      height: 16px;
+      color: var(--icon);
+      transform: translateX(-50%);
+    }
+
+    .label,
+    .target,
+    .count,
+    .hint {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      text-align: center;
+      letter-spacing: 0;
+      transform: translateY(6px);
     }
 
     .label {
-      margin: 0;
       color: var(--muted);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 400;
       line-height: 1.1;
     }
 
     .target {
-      margin: 0;
       color: var(--text);
-      font-size: clamp(30px, 3vw, 38px);
+      font-size: 35px;
       font-weight: 650;
       line-height: 1.08;
-      letter-spacing: 0;
+      max-width: calc(100% - 84px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .count {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
       color: var(--text);
-      font-size: clamp(58px, 6vw, 80px);
+      font-size: 72px;
       font-weight: 750;
       line-height: 1;
       font-variant-numeric: tabular-nums;
     }
 
     .hint {
-      margin: 0;
       color: var(--muted);
       font-size: 16px;
       font-weight: 500;
       line-height: 1.15;
     }
 
+    .cancel .label {
+      font-weight: 520;
+    }
+
+    .cancel .count {
+      color: var(--cancel);
+      font-size: 68px;
+      font-weight: 650;
+    }
+
     .controls {
       position: fixed;
-      bottom: 26px;
+      z-index: 3;
       left: 50%;
-      transform: translateX(-50%);
+      bottom: 24px;
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 8px;
+      transform: translateX(-50%);
       border-radius: 12px;
-      background: rgba(18, 20, 24, 0.54);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(8, 9, 11, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(20px);
     }
 
     button {
-      min-width: 82px;
       height: 34px;
+      min-width: 82px;
       padding: 0 12px;
       border: 0;
       border-radius: 8px;
-      color: rgba(255, 255, 255, 0.92);
-      background: rgba(255, 255, 255, 0.14);
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.12);
       font: inherit;
       cursor: pointer;
     }
 
     button:hover,
     button.active {
-      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      background: rgba(235, 20, 28, 0.52);
     }
 
-    .red {
-      color: var(--danger);
-    }
-
-    .cancel-mark {
-      width: clamp(58px, 6vw, 78px);
-      aspect-ratio: 1;
-      color: var(--danger);
-      display: block;
-    }
-
-    .cancel-word {
-      color: var(--danger);
-      font-size: clamp(42px, 4.8vw, 58px);
-      font-weight: 680;
-      line-height: 1.05;
-    }
-
-    .variant {
-      --danger: #d85c5c;
-    }
-
-    .variant[data-style="soft"] {
-      --danger: #c75b5b;
-    }
-
-    .variant[data-style="balanced"] {
-      --danger: #d66a64;
-    }
-
-    .variant[data-style="compact"] {
-      --danger: #b84f56;
-    }
-
-    .cancel-chip {
-      min-width: 86px;
-      height: 58px;
-      padding: 0 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 18px;
-      color: var(--danger);
-      background: color-mix(in srgb, var(--danger), transparent 88%);
-      border: 1px solid color-mix(in srgb, var(--danger), transparent 62%);
-      font-size: clamp(32px, 4vw, 44px);
-      font-weight: 680;
-      line-height: 1;
-    }
-
-    .cancel-ring {
-      width: clamp(62px, 6vw, 76px);
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: var(--danger);
-      background: color-mix(in srgb, var(--danger), transparent 90%);
-      border: 1px solid color-mix(in srgb, var(--danger), transparent 58%);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-
-    .cancel-ring svg {
-      width: 34px;
-      height: 34px;
-      display: block;
-    }
-
-    @media (max-width: 980px) {
+    @media (max-width: 960px) {
       body {
         overflow: auto;
       }
 
-      .stage {
-        min-height: 100vh;
-        height: auto;
-      }
-
-      .variants {
+      .themes {
         grid-template-columns: 1fr;
       }
 
-      .hud {
-        width: min(100%, 500px);
+      .stage {
+        padding-top: 64px;
       }
     }
   </style>
 </head>
 <body>
   <div class="menubar">
-    <span>PG27UCDM Preview</span>
-    <span>17:16</span>
+    <span>PG27UCDM ROG HUD</span>
+    <span>HiDPI 500 × 300</span>
   </div>
 
   <main class="stage">
-    <div class="variants">
-      <section class="variant" data-style="soft" aria-label="Soft HUD preview">
-        <p class="variant-title">低饱和符号</p>
-        <article class="hud"></article>
+    <div class="themes">
+      <section class="theme dark" aria-label="Dark ROG theme">
+        <p class="theme-title">深色 ROG 主题</p>
+        <div class="hud-wrap">
+          <article class="hud"></article>
+        </div>
       </section>
-      <section class="variant" data-style="balanced" aria-label="Balanced HUD preview">
-        <p class="variant-title">柔和圆形图标</p>
-        <article class="hud"></article>
-      </section>
-      <section class="variant" data-style="compact" aria-label="Compact HUD preview">
-        <p class="variant-title">状态胶囊</p>
-        <article class="hud"></article>
+
+      <section class="theme light" aria-label="Light ROG theme">
+        <p class="theme-title">浅色 ROG 主题</p>
+        <div class="hud-wrap">
+          <article class="hud"></article>
+        </div>
       </section>
     </div>
   </main>
@@ -331,31 +490,23 @@
       const isCancelled = state === "cancel";
 
       huds.forEach((hud) => {
-        const variant = hud.closest(".variant")?.dataset.style;
-        let center = state;
-
-        if (isCancelled && variant === "soft") {
-          center = '<div class="count red">×</div>';
-        } else if (isCancelled && variant === "balanced") {
-          center = `
-            <span class="cancel-ring">
-              <svg viewBox="0 0 40 40" aria-hidden="true">
-                <path d="M12 12L28 28M28 12L12 28" fill="none" stroke="currentColor" stroke-width="4.8" stroke-linecap="round"/>
-              </svg>
-            </span>
-          `;
-        } else if (isCancelled) {
-          center = '<div class="cancel-chip">取消</div>';
-        } else {
-          center = `<div class="count">${state}</div>`;
-        }
-
+        hud.classList.toggle("cancel", isCancelled);
         hud.innerHTML = `
           ${icon}
+          <span class="gold-ticks"></span>
+          <span class="corner-lines"></span>
+          <span class="side-rail"></span>
+          <span class="micro-grid"></span>
           <p class="label">${isCancelled ? "已取消" : "切换屏幕输入源"}</p>
-          <h1 class="target">HDMI 1</h1>
-          ${center}
+          <h1 class="target">DisplayPort</h1>
+          <div class="count">${isCancelled ? "×" : state}</div>
           <p class="hint">${isCancelled ? "未切换屏幕输入源" : "ESC 取消"}</p>
+          <span class="edition-strip">
+            <span class="flow">0>>>1</span>
+            <span class="dots"></span>
+            <span class="hatch"></span>
+            <span class="scan"></span>
+          </span>
         `;
       });
     }
