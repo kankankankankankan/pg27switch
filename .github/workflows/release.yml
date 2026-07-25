@@ -74,16 +74,82 @@ jobs:
             exit 1
           fi
 
-          if gh release view "${release_tag}" >/dev/null 2>&1; then
-            gh release upload "${release_tag}" \
-              dist/pg27switch-macos-universal.zip \
-              dist/pg27switch-macos-universal.zip.sha256 \
-              --clobber
-          else
+          if ! gh release view "${release_tag}" >/dev/null 2>&1; then
             gh release create "${release_tag}" \
-              dist/pg27switch-macos-universal.zip \
-              dist/pg27switch-macos-universal.zip.sha256 \
               --target "${GITHUB_SHA}" \
               --title "${release_tag}" \
-              --notes "macOS universal build for pg27switch."
+              --notes "Release build for pg27switch." || true
           fi
+
+          gh release upload "${release_tag}" \
+            dist/pg27switch-macos-universal.zip \
+            dist/pg27switch-macos-universal.zip.sha256 \
+            --clobber
+
+  build-windows:
+    name: Build Windows binary
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Publish win-x64
+        shell: pwsh
+        run: |
+          dotnet publish .\windows\PG27Switch\PG27Switch.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:PublishReadyToRun=true `
+            -o .\dist\windows-x64
+
+      - name: Package
+        shell: pwsh
+        run: |
+          Compress-Archive -Path .\dist\windows-x64\pg27switch.exe -DestinationPath .\dist\pg27switch-windows-x64.zip -Force
+          (Get-FileHash .\dist\pg27switch-windows-x64.zip -Algorithm SHA256).Hash.ToLower() + "  pg27switch-windows-x64.zip" |
+            Set-Content .\dist\pg27switch-windows-x64.zip.sha256 -NoNewline
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pg27switch-windows-x64
+          path: |
+            dist/pg27switch-windows-x64.zip
+            dist/pg27switch-windows-x64.zip.sha256
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG_INPUT: ${{ inputs.release_tag }}
+        run: |
+          release_tag="${GITHUB_REF_NAME}"
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            release_tag="${RELEASE_TAG_INPUT}"
+          fi
+
+          if [ -z "${release_tag}" ]; then
+            echo "release_tag is required for manual runs."
+            exit 1
+          fi
+
+          if ! gh release view "${release_tag}" >/dev/null 2>&1; then
+            gh release create "${release_tag}" \
+              --target "${GITHUB_SHA}" \
+              --title "${release_tag}" \
+              --notes "Release build for pg27switch." || true
+          fi
+
+          gh release upload "${release_tag}" \
+            dist/pg27switch-windows-x64.zip \
+            dist/pg27switch-windows-x64.zip.sha256 \
+            --clobber

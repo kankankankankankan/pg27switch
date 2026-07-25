@@ -2,9 +2,11 @@
 
 [中文说明](README.zh-CN.md)
 
-A macOS command line input switcher for the ASUS ROG Swift OLED PG27UCDM.
+A command line input switcher for the ASUS ROG Swift OLED PG27UCDM.
 
-`pg27switch` shows a native macOS HUD on every connected display, counts down before switching, lets you cancel with ESC, then calls BetterDisplay to send the DDC input selection command.
+On macOS, `pg27switch` shows a native HUD, counts down before switching, lets you cancel with ESC, then calls BetterDisplay to send the DDC input selection command.
+
+The Windows version is under active development. It uses the Windows Monitor Configuration API directly and does not depend on BetterDisplay or ControlMyMonitor.
 
 Detailed usage: [docs/usage.md](docs/usage.md)
 
@@ -76,11 +78,13 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-The workflow builds both `arm64` and `x86_64`, combines them into a universal macOS binary, then uploads:
+The workflow builds macOS `arm64` and `x86_64`, combines them into a universal macOS binary, builds a Windows x64 executable, then uploads:
 
 ```text
 pg27switch-macos-universal.zip
 pg27switch-macos-universal.zip.sha256
+pg27switch-windows-x64.zip
+pg27switch-windows-x64.zip.sha256
 ```
 
 Tagged builds and manual runs with `release_tag` create a GitHub Release.
@@ -170,6 +174,8 @@ macos/Sources/Logger.swift               File logger
 macos/Sources/main.swift                 App entry point
 macos/build.sh                           Build script
 macos/install.sh                         Local install script
+windows/PG27Switch/                      Windows WPF and DDC/CI implementation
+windows/README.md                        Windows usage and build notes
 docs/usage.md                            Usage guide
 ```
 
