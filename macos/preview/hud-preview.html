@@ -135,7 +135,7 @@
       content: "";
       position: absolute;
       top: 15px;
-      left: 18px;
+      left: 24px;
       width: 38px;
       height: 8px;
       background:
@@ -322,17 +322,17 @@
       --quiet: rgba(0, 0, 0, 0.080);
       --gold: var(--light-gold);
       --bottom-mark: rgba(0, 0, 0, 0.14);
-      --icon: rgba(189, 15, 20, 0.78);
+      --icon: rgba(189, 15, 20, 0.70);
       --cancel: rgba(184, 15, 20, 0.86);
     }
 
     .icon {
       position: absolute;
       z-index: 2;
-      top: 8px;
+      top: 1px;
       left: 50%;
-      width: 28px;
-      height: 16px;
+      width: 34px;
+      height: 34px;
       color: var(--icon);
       transform: translateX(-50%);
     }
@@ -479,9 +479,8 @@
     const stateButtons = Array.from(document.querySelectorAll("[data-state]"));
     const huds = Array.from(document.querySelectorAll(".hud"));
     const icon = `
-      <svg class="icon" viewBox="0 0 64 25" aria-hidden="true">
-        <path d="M5.5 1H58.5C61.6 1 64 3.4 64 6.5V13.8C64 16.5 61.5 17.6 58.7 18.2C55 19 54.9 21.3 52.2 23C51.2 23.6 50.2 24 48.8 24H15.2C13.8 24 12.8 23.6 11.8 23C9.1 21.3 9 19 5.3 18.2C2.5 17.6 0 16.5 0 13.8V6.5C0 3.4 2.4 1 5.5 1ZM6.4 4.2C4.6 4.2 3.3 5.5 3.3 7.3V13.2C3.3 13.8 3.8 14.2 4.6 14.4C9.9 15.1 10.1 18.1 13.5 20.5C14.1 20.8 14.8 21 15.6 21H48.4C49.2 21 49.9 20.8 50.5 20.5C53.9 18.1 54.1 15.1 59.4 14.4C60.2 14.2 60.7 13.8 60.7 13.2V7.3C60.7 5.5 59.4 4.2 57.6 4.2H6.4Z" fill="currentColor" fill-rule="evenodd"/>
-        <path d="M18.5 11.4H45.5V14.2H18.5ZM18.5 9.4H20.2V11.6H18.5ZM21.2 9.4H22.9V11.6H21.2ZM23.9 9.4H25.6V11.6H23.9ZM26.6 9.4H28.3V11.6H26.6ZM29.3 9.4H31V11.6H29.3ZM32 9.4H33.7V11.6H32ZM34.7 9.4H36.4V11.6H34.7ZM37.4 9.4H39.1V11.6H37.4ZM40.1 9.4H41.8V11.6H40.1ZM42.8 9.4H44.5V11.6H42.8ZM18.5 14.1H20.2V16.3H18.5ZM21.2 14.1H22.9V16.3H21.2ZM23.9 14.1H25.6V16.3H23.9ZM26.6 14.1H28.3V16.3H26.6ZM29.3 14.1H31V16.3H29.3ZM32 14.1H33.7V16.3H32ZM34.7 14.1H36.4V16.3H34.7ZM37.4 14.1H39.1V16.3H37.4ZM40.1 14.1H41.8V16.3H40.1ZM42.8 14.1H44.5V16.3H42.8Z" fill="currentColor"/>
+      <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
+        <path fill="currentColor" d="M1 5a1 1 0 0 0-1 1v3.191a1 1 0 0 0 .553.894l1.618.81a1 1 0 0 0 .447.105H15a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm1.5 2h11a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8H3v.5a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5"/>
       </svg>
     `;
 

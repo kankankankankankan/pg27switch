@@ -153,9 +153,9 @@ final class HUDWindow: NSPanel {
             stack.trailingAnchor.constraint(equalTo: rootView.trailingAnchor, constant: -(Self.shadowInset + 42)),
             stack.centerYAnchor.constraint(equalTo: rootView.centerYAnchor, constant: 16),
             iconView.centerXAnchor.constraint(equalTo: rootView.centerXAnchor),
-            iconView.topAnchor.constraint(equalTo: rootView.topAnchor, constant: Self.shadowInset + 8),
-            iconView.widthAnchor.constraint(equalToConstant: 28),
-            iconView.heightAnchor.constraint(equalToConstant: 16),
+            iconView.topAnchor.constraint(equalTo: rootView.topAnchor, constant: Self.shadowInset + 1),
+            iconView.widthAnchor.constraint(equalToConstant: 34),
+            iconView.heightAnchor.constraint(equalToConstant: 34),
             statusLabel.widthAnchor.constraint(lessThanOrEqualTo: stack.widthAnchor),
             targetLabel.widthAnchor.constraint(lessThanOrEqualTo: stack.widthAnchor),
             countdownLabel.widthAnchor.constraint(lessThanOrEqualTo: stack.widthAnchor),
@@ -312,14 +312,9 @@ private final class HUDBackgroundView: NSView {
         highlightPath.lineWidth = 1
         highlightPath.stroke()
 
-        let accentRect = NSRect(x: hudRect.midX - 28, y: hudRect.maxY - 19, width: 56, height: 2)
-        let accentPath = NSBezierPath(roundedRect: accentRect, xRadius: 1.5, yRadius: 1.5)
-        palette.accent.setFill()
-        accentPath.fill()
-
         for index in 0..<3 {
             drawChevron(
-                origin: NSPoint(x: hudRect.minX + 18 + CGFloat(index) * 12, y: hudRect.maxY - 25),
+                origin: NSPoint(x: hudRect.minX + 24 + CGFloat(index) * 12, y: hudRect.maxY - 25),
                 color: palette.accent.withAlphaComponent(palette.accent.alphaComponent * 0.58)
             )
         }
