@@ -40,7 +40,8 @@ internal static class Program
             };
 
             var controller = new CountdownRunner(source, options);
-            app.Startup += (_, _) => controller.Start();
+            controller.Start();
+            AppLogger.Info("Entering WPF message loop.");
             return app.Run();
         }
         catch (Exception ex)
