@@ -107,6 +107,8 @@ jobs:
             -r win-x64 `
             --self-contained true `
             -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:IncludeAllContentForSelfExtract=true `
             -p:PublishReadyToRun=true `
             -o .\dist\windows-x64
 

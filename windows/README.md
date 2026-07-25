@@ -37,6 +37,12 @@ Install .NET 8 SDK on Windows, then run:
 dotnet publish .\windows\PG27Switch\PG27Switch.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true
 ```
 
+For the self contained WPF single file build, native WPF libraries must be extracted at runtime:
+
+```powershell
+dotnet publish .\windows\PG27Switch\PG27Switch.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:IncludeAllContentForSelfExtract=true -p:PublishReadyToRun=true
+```
+
 Output:
 
 ```text
