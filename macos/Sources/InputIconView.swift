@@ -8,6 +8,12 @@ enum InputIconKind {
 }
 
 final class InputIconView: NSView {
+    var iconColor = NSColor.white.withAlphaComponent(0.88) {
+        didSet {
+            needsDisplay = true
+        }
+    }
+
     var kind: InputIconKind = .display {
         didSet {
             needsDisplay = true
@@ -21,7 +27,7 @@ final class InputIconView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
-        let color = NSColor.labelColor.withAlphaComponent(0.9)
+        let color = iconColor
         color.setFill()
 
         switch kind {

@@ -9,9 +9,6 @@
       color-scheme: dark;
       --text: rgba(255, 255, 255, 0.94);
       --muted: rgba(255, 255, 255, 0.62);
-      --panel: rgba(42, 44, 50, 0.58);
-      --line: rgba(255, 255, 255, 0.18);
-      --shadow: rgba(0, 0, 0, 0.42);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
     }
 
@@ -26,28 +23,29 @@
       place-items: center;
       overflow: hidden;
       background:
-        radial-gradient(circle at 18% 22%, rgba(86, 128, 184, 0.72), transparent 34%),
-        radial-gradient(circle at 84% 16%, rgba(112, 88, 149, 0.64), transparent 30%),
-        linear-gradient(135deg, #111318 0%, #202631 52%, #15191f 100%);
+        linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+        radial-gradient(circle at 18% 18%, rgba(88, 116, 146, 0.34), transparent 32%),
+        radial-gradient(circle at 86% 12%, rgba(82, 69, 102, 0.26), transparent 30%),
+        linear-gradient(135deg, #151a21 0%, #222833 46%, #171b21 100%);
+      background-size: 56px 56px, 56px 56px, auto, auto, auto;
     }
 
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background:
-        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: radial-gradient(circle at center, black, transparent 72%);
+      background: rgba(3, 5, 8, 0.24);
+      pointer-events: none;
     }
 
     .stage {
-      width: min(100vw, 1200px);
+      width: min(100vw, 1280px);
       height: min(100vh, 760px);
       position: relative;
       display: grid;
       place-items: center;
+      padding: 80px 40px 104px;
     }
 
     .menubar {
@@ -67,26 +65,72 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
+    .variants {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: min(100%, 1120px);
+      align-items: end;
+    }
+
+    .variant {
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+    }
+
+    .variant-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.48);
+    }
+
     .hud {
-      width: 500px;
-      height: 300px;
+      width: min(100%, 352px);
+      aspect-ratio: 5 / 3;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 13px;
-      border-radius: 34px;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: 0 34px 90px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.24);
-      backdrop-filter: blur(34px) saturate(1.55);
-      -webkit-backdrop-filter: blur(34px) saturate(1.55);
+      background: rgba(42, 44, 50, 0.56);
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      backdrop-filter: blur(34px) saturate(1.38);
+      -webkit-backdrop-filter: blur(34px) saturate(1.38);
+    }
+
+    .variant[data-style="soft"] .hud {
+      border-radius: 28px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 20px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    .variant[data-style="balanced"] .hud {
+      border-radius: 24px;
+      background: rgba(36, 38, 43, 0.62);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 16px 36px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .variant[data-style="compact"] .hud {
+      border-radius: 20px;
+      background: rgba(30, 32, 36, 0.7);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 12px 28px rgba(0, 0, 0, 0.28);
     }
 
     .icon {
       width: 44px;
       height: 34px;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.88);
     }
 
     .label {
@@ -100,14 +144,15 @@
     .target {
       margin: 0;
       color: var(--text);
-      font-size: 38px;
+      font-size: clamp(30px, 3vw, 38px);
       font-weight: 650;
       line-height: 1.08;
+      letter-spacing: 0;
     }
 
     .count {
       color: var(--text);
-      font-size: 80px;
+      font-size: clamp(58px, 6vw, 80px);
       font-weight: 750;
       line-height: 1;
       font-variant-numeric: tabular-nums;
@@ -127,6 +172,7 @@
       left: 50%;
       transform: translateX(-50%);
       display: flex;
+      align-items: center;
       gap: 8px;
       padding: 8px;
       border-radius: 12px;
@@ -153,17 +199,89 @@
     }
 
     .red {
-      color: #ff6961;
+      color: var(--danger);
     }
 
-    @media (max-width: 620px) {
-      .hud {
-        width: calc(100vw - 40px);
-        height: 280px;
+    .cancel-mark {
+      width: clamp(58px, 6vw, 78px);
+      aspect-ratio: 1;
+      color: var(--danger);
+      display: block;
+    }
+
+    .cancel-word {
+      color: var(--danger);
+      font-size: clamp(42px, 4.8vw, 58px);
+      font-weight: 680;
+      line-height: 1.05;
+    }
+
+    .variant {
+      --danger: #d85c5c;
+    }
+
+    .variant[data-style="soft"] {
+      --danger: #c75b5b;
+    }
+
+    .variant[data-style="balanced"] {
+      --danger: #d66a64;
+    }
+
+    .variant[data-style="compact"] {
+      --danger: #b84f56;
+    }
+
+    .cancel-chip {
+      min-width: 86px;
+      height: 58px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      color: var(--danger);
+      background: color-mix(in srgb, var(--danger), transparent 88%);
+      border: 1px solid color-mix(in srgb, var(--danger), transparent 62%);
+      font-size: clamp(32px, 4vw, 44px);
+      font-weight: 680;
+      line-height: 1;
+    }
+
+    .cancel-ring {
+      width: clamp(62px, 6vw, 76px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--danger);
+      background: color-mix(in srgb, var(--danger), transparent 90%);
+      border: 1px solid color-mix(in srgb, var(--danger), transparent 58%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .cancel-ring svg {
+      width: 34px;
+      height: 34px;
+      display: block;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
       }
 
-      .target {
-        font-size: 30px;
+      .stage {
+        min-height: 100vh;
+        height: auto;
+      }
+
+      .variants {
+        grid-template-columns: 1fr;
+      }
+
+      .hud {
+        width: min(100%, 500px);
       }
     }
   </style>
@@ -175,16 +293,20 @@
   </div>
 
   <main class="stage">
-    <section class="hud" aria-label="HUD preview">
-      <svg class="icon" id="icon" viewBox="0 0 64 25" aria-hidden="true">
-        <path d="M5.5 1H58.5C61.6 1 64 3.4 64 6.5V13.8C64 16.5 61.5 17.6 58.7 18.2C55 19 54.9 21.3 52.2 23C51.2 23.6 50.2 24 48.8 24H15.2C13.8 24 12.8 23.6 11.8 23C9.1 21.3 9 19 5.3 18.2C2.5 17.6 0 16.5 0 13.8V6.5C0 3.4 2.4 1 5.5 1ZM6.4 4.2C4.6 4.2 3.3 5.5 3.3 7.3V13.2C3.3 13.8 3.8 14.2 4.6 14.4C9.9 15.1 10.1 18.1 13.5 20.5C14.1 20.8 14.8 21 15.6 21H48.4C49.2 21 49.9 20.8 50.5 20.5C53.9 18.1 54.1 15.1 59.4 14.4C60.2 14.2 60.7 13.8 60.7 13.2V7.3C60.7 5.5 59.4 4.2 57.6 4.2H6.4Z" fill="currentColor" fill-rule="evenodd"/>
-        <path d="M18.5 11.4H45.5V14.2H18.5ZM18.5 9.4H20.2V11.6H18.5ZM21.2 9.4H22.9V11.6H21.2ZM23.9 9.4H25.6V11.6H23.9ZM26.6 9.4H28.3V11.6H26.6ZM29.3 9.4H31V11.6H29.3ZM32 9.4H33.7V11.6H32ZM34.7 9.4H36.4V11.6H34.7ZM37.4 9.4H39.1V11.6H37.4ZM40.1 9.4H41.8V11.6H40.1ZM42.8 9.4H44.5V11.6H42.8ZM18.5 14.1H20.2V16.3H18.5ZM21.2 14.1H22.9V16.3H21.2ZM23.9 14.1H25.6V16.3H23.9ZM26.6 14.1H28.3V16.3H26.6ZM29.3 14.1H31V16.3H29.3ZM32 14.1H33.7V16.3H32ZM34.7 14.1H36.4V16.3H34.7ZM37.4 14.1H39.1V16.3H37.4ZM40.1 14.1H41.8V16.3H40.1ZM42.8 14.1H44.5V16.3H42.8Z" fill="currentColor"/>
-      </svg>
-      <p class="label" id="label">切换屏幕输入源</p>
-      <h1 class="target" id="target">HDMI 1</h1>
-      <div class="count" id="count">3</div>
-      <p class="hint" id="hint">ESC 取消</p>
-    </section>
+    <div class="variants">
+      <section class="variant" data-style="soft" aria-label="Soft HUD preview">
+        <p class="variant-title">低饱和符号</p>
+        <article class="hud"></article>
+      </section>
+      <section class="variant" data-style="balanced" aria-label="Balanced HUD preview">
+        <p class="variant-title">柔和圆形图标</p>
+        <article class="hud"></article>
+      </section>
+      <section class="variant" data-style="compact" aria-label="Compact HUD preview">
+        <p class="variant-title">状态胶囊</p>
+        <article class="hud"></article>
+      </section>
+    </div>
   </main>
 
   <nav class="controls" aria-label="Preview controls">
@@ -195,29 +317,50 @@
   </nav>
 
   <script>
-    const label = document.getElementById("label");
-    const count = document.getElementById("count");
-    const hint = document.getElementById("hint");
-    const buttons = Array.from(document.querySelectorAll("button"));
+    const stateButtons = Array.from(document.querySelectorAll("[data-state]"));
+    const huds = Array.from(document.querySelectorAll(".hud"));
+    const icon = `
+      <svg class="icon" viewBox="0 0 64 25" aria-hidden="true">
+        <path d="M5.5 1H58.5C61.6 1 64 3.4 64 6.5V13.8C64 16.5 61.5 17.6 58.7 18.2C55 19 54.9 21.3 52.2 23C51.2 23.6 50.2 24 48.8 24H15.2C13.8 24 12.8 23.6 11.8 23C9.1 21.3 9 19 5.3 18.2C2.5 17.6 0 16.5 0 13.8V6.5C0 3.4 2.4 1 5.5 1ZM6.4 4.2C4.6 4.2 3.3 5.5 3.3 7.3V13.2C3.3 13.8 3.8 14.2 4.6 14.4C9.9 15.1 10.1 18.1 13.5 20.5C14.1 20.8 14.8 21 15.6 21H48.4C49.2 21 49.9 20.8 50.5 20.5C53.9 18.1 54.1 15.1 59.4 14.4C60.2 14.2 60.7 13.8 60.7 13.2V7.3C60.7 5.5 59.4 4.2 57.6 4.2H6.4Z" fill="currentColor" fill-rule="evenodd"/>
+        <path d="M18.5 11.4H45.5V14.2H18.5ZM18.5 9.4H20.2V11.6H18.5ZM21.2 9.4H22.9V11.6H21.2ZM23.9 9.4H25.6V11.6H23.9ZM26.6 9.4H28.3V11.6H26.6ZM29.3 9.4H31V11.6H29.3ZM32 9.4H33.7V11.6H32ZM34.7 9.4H36.4V11.6H34.7ZM37.4 9.4H39.1V11.6H37.4ZM40.1 9.4H41.8V11.6H40.1ZM42.8 9.4H44.5V11.6H42.8ZM18.5 14.1H20.2V16.3H18.5ZM21.2 14.1H22.9V16.3H21.2ZM23.9 14.1H25.6V16.3H23.9ZM26.6 14.1H28.3V16.3H26.6ZM29.3 14.1H31V16.3H29.3ZM32 14.1H33.7V16.3H32ZM34.7 14.1H36.4V16.3H34.7ZM37.4 14.1H39.1V16.3H37.4ZM40.1 14.1H41.8V16.3H40.1ZM42.8 14.1H44.5V16.3H42.8Z" fill="currentColor"/>
+      </svg>
+    `;
 
     function setState(state) {
-      buttons.forEach((button) => button.classList.toggle("active", button.dataset.state === state));
-      count.className = "count";
+      stateButtons.forEach((button) => button.classList.toggle("active", button.dataset.state === state));
+      const isCancelled = state === "cancel";
 
-      if (state === "cancel") {
-        label.textContent = "已取消";
-        count.textContent = "×";
-        count.classList.add("red");
-        hint.textContent = "未切换屏幕输入源";
-        return;
-      }
+      huds.forEach((hud) => {
+        const variant = hud.closest(".variant")?.dataset.style;
+        let center = state;
 
-      label.textContent = "切换屏幕输入源";
-      count.textContent = state;
-      hint.textContent = "ESC 取消";
+        if (isCancelled && variant === "soft") {
+          center = '<div class="count red">×</div>';
+        } else if (isCancelled && variant === "balanced") {
+          center = `
+            <span class="cancel-ring">
+              <svg viewBox="0 0 40 40" aria-hidden="true">
+                <path d="M12 12L28 28M28 12L12 28" fill="none" stroke="currentColor" stroke-width="4.8" stroke-linecap="round"/>
+              </svg>
+            </span>
+          `;
+        } else if (isCancelled) {
+          center = '<div class="cancel-chip">取消</div>';
+        } else {
+          center = `<div class="count">${state}</div>`;
+        }
+
+        hud.innerHTML = `
+          ${icon}
+          <p class="label">${isCancelled ? "已取消" : "切换屏幕输入源"}</p>
+          <h1 class="target">HDMI 1</h1>
+          ${center}
+          <p class="hint">${isCancelled ? "未切换屏幕输入源" : "ESC 取消"}</p>
+        `;
+      });
     }
 
-    buttons.forEach((button) => {
+    stateButtons.forEach((button) => {
       button.addEventListener("click", () => setState(button.dataset.state));
     });
 
@@ -226,6 +369,8 @@
         setState("cancel");
       }
     });
+
+    setState("3");
   </script>
 </body>
 </html>
