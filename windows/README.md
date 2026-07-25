@@ -13,6 +13,7 @@ pg27switch.exe hdmi1
 pg27switch.exe hdmi2
 pg27switch.exe usbc
 pg27switch.exe --monitor 1 dp
+pg27switch.exe --preview
 pg27switch.exe --preview hdmi1
 pg27switch.exe --preview dp --seconds 5
 ```
@@ -47,3 +48,9 @@ windows\PG27Switch\bin\Release\net8.0-windows\win-x64\publish\pg27switch.exe
 Use `--list` first on the target Windows machine. Multi monitor setups can expose several physical monitor handles, and `--monitor INDEX` prevents switching the wrong display.
 
 ControlMyMonitor can still be useful for checking DDC support and verifying VCP values during development.
+
+Runtime logs are written to:
+
+```text
+%LOCALAPPDATA%\PG27Switch\pg27switch.log
+```

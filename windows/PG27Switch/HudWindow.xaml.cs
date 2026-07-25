@@ -17,13 +17,28 @@ public partial class HudWindow : Window
     {
         InitializeComponent();
 
+        ShowActivated = true;
         _palette = HudPalette.Current();
         ApplyPalette();
         TargetText.Text = source.Name;
         DrawIcon(source.IconKind);
 
-        Left = screen.WorkingArea.Left + (screen.WorkingArea.Width - Width) / 2.0;
-        Top = screen.WorkingArea.Top + (screen.WorkingArea.Height - Height) / 2.0;
+        Loaded += (_, _) => CenterOnScreen(screen);
+        SourceInitialized += (_, _) => CenterOnScreen(screen);
+    }
+
+    private void CenterOnScreen(Forms.Screen screen)
+    {
+        var source = PresentationSource.FromVisual(this);
+        var transform = source?.CompositionTarget?.TransformFromDevice ?? WpfMedia.Matrix.Identity;
+        var topLeft = transform.Transform(new System.Windows.Point(screen.WorkingArea.Left, screen.WorkingArea.Top));
+        var bottomRight = transform.Transform(new System.Windows.Point(screen.WorkingArea.Right, screen.WorkingArea.Bottom));
+        var workingWidth = bottomRight.X - topLeft.X;
+        var workingHeight = bottomRight.Y - topLeft.Y;
+
+        Left = topLeft.X + (workingWidth - ActualWidth) / 2.0;
+        Top = topLeft.Y + (workingHeight - ActualHeight) / 2.0;
+        AppLogger.Info($"HUD positioned at left={Left}, top={Top}, width={ActualWidth}, height={ActualHeight}");
     }
 
     public void SetCountdown(int number)

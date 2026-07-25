@@ -101,6 +101,11 @@ Options:
             source = InputSource.FromCustom(customName, customValue ?? 0);
         }
 
+        if (previewOnly && source is null)
+        {
+            source = InputSource.TryParse("dp", out var previewSource) ? previewSource : null;
+        }
+
         if (!listOnly && source is null)
         {
             throw new ArgumentException("Missing input.");

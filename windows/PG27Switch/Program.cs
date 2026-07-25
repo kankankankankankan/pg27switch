@@ -10,6 +10,7 @@ internal static class Program
     {
         try
         {
+            AppLogger.Info($"Started with args: {string.Join(" ", args)}");
             var options = CliParser.Parse(args);
             if (options.ShowHelp)
             {
@@ -32,6 +33,7 @@ internal static class Program
             }
 
             var source = options.Source ?? throw new ArgumentException("Missing input.");
+            AppLogger.Info($"Parsed source={source.Name}, value={source.Value}, preview={options.PreviewOnly}, seconds={options.Seconds}");
             var app = new Wpf.Application
             {
                 ShutdownMode = Wpf.ShutdownMode.OnExplicitShutdown
@@ -43,6 +45,7 @@ internal static class Program
         }
         catch (Exception ex)
         {
+            AppLogger.Error(ex);
             ConsoleHelper.EnsureConsole();
             Console.Error.WriteLine(ex.Message);
             Console.Error.WriteLine();
@@ -71,15 +74,24 @@ internal sealed class CountdownRunner
 
     public void Start()
     {
+        AppLogger.Info($"Screen count: {Forms.Screen.AllScreens.Length}");
         foreach (var screen in Forms.Screen.AllScreens)
         {
+            AppLogger.Info($"Creating HUD for screen {screen.DeviceName}, bounds={screen.Bounds}, workingArea={screen.WorkingArea}");
             var window = new HudWindow(_source, screen);
             window.CancelRequested += Cancel;
             _windows.Add(window);
             window.Show();
         }
 
-        _windows.FirstOrDefault()?.Activate();
+        var firstWindow = _windows.FirstOrDefault();
+        if (firstWindow is null)
+        {
+            throw new InvalidOperationException("No screens found.");
+        }
+
+        firstWindow.Activate();
+        firstWindow.Focus();
         SetCountdown(_remaining);
 
         _timer.Interval = TimeSpan.FromSeconds(1);
