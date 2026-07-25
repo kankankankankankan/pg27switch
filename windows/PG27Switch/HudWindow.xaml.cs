@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Forms = System.Windows.Forms;
+using WpfMedia = System.Windows.Media;
 using WpfInput = System.Windows.Input;
 
 namespace PG27Switch;
@@ -59,7 +60,7 @@ public partial class HudWindow : Window
         StatusText.Text = "未完成";
         CountdownText.Text = "!";
         CountdownText.FontSize = 68;
-        CountdownText.Foreground = Brushes.Orange;
+        CountdownText.Foreground = WpfMedia.Brushes.Orange;
         HintText.Text = "DDC 写入失败";
     }
 
@@ -122,13 +123,13 @@ public partial class HudWindow : Window
 }
 
 internal sealed record HudPalette(
-    System.Windows.Media.Brush PanelFill,
-    System.Windows.Media.Brush Border,
-    System.Windows.Media.Brush PrimaryText,
-    System.Windows.Media.Brush SecondaryText,
-    System.Windows.Media.Brush CancelText,
-    System.Windows.Media.Brush Icon,
-    System.Windows.Media.Brush Accent)
+    WpfMedia.Brush PanelFill,
+    WpfMedia.Brush Border,
+    WpfMedia.Brush PrimaryText,
+    WpfMedia.Brush SecondaryText,
+    WpfMedia.Brush CancelText,
+    WpfMedia.Brush Icon,
+    WpfMedia.Brush Accent)
 {
     public static HudPalette Current()
     {
@@ -159,7 +160,7 @@ internal sealed record HudPalette(
 
     private static SolidColorBrush BrushFrom(string color)
     {
-        var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+        var brush = new SolidColorBrush((WpfMedia.Color)WpfMedia.ColorConverter.ConvertFromString(color));
         brush.Freeze();
         return brush;
     }

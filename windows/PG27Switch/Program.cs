@@ -1,4 +1,5 @@
-using System.Windows;
+using Forms = System.Windows.Forms;
+using Wpf = System.Windows;
 
 namespace PG27Switch;
 
@@ -31,9 +32,9 @@ internal static class Program
             }
 
             var source = options.Source ?? throw new ArgumentException("Missing input.");
-            var app = new Application
+            var app = new Wpf.Application
             {
-                ShutdownMode = ShutdownMode.OnExplicitShutdown
+                ShutdownMode = Wpf.ShutdownMode.OnExplicitShutdown
             };
 
             var controller = new CountdownRunner(source, options);
@@ -70,7 +71,7 @@ internal sealed class CountdownRunner
 
     public void Start()
     {
-        foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+        foreach (var screen in Forms.Screen.AllScreens)
         {
             var window = new HudWindow(_source, screen);
             window.CancelRequested += Cancel;
@@ -168,7 +169,7 @@ internal sealed class CountdownRunner
             {
                 window.Close();
             }
-            Application.Current.Shutdown(_exitCode);
+            Wpf.Application.Current.Shutdown(_exitCode);
         };
         closeTimer.Start();
     }

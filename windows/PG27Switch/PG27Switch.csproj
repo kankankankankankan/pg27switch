@@ -9,5 +9,6 @@
     <AssemblyName>pg27switch</AssemblyName>
     <RootNamespace>PG27Switch</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
   </PropertyGroup>
 </Project>
