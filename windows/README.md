@@ -4,6 +4,8 @@ Windows version of `pg27switch` for ASUS ROG Swift OLED PG27UCDM.
 
 This version calls the Windows Monitor Configuration API directly. It does not depend on BetterDisplay or ControlMyMonitor.
 
+The published executable uses the Windows GUI subsystem, so launching it from Stream Deck does not open a console window. Runtime diagnostics remain available in `%LOCALAPPDATA%\PG27Switch\pg27switch.log`.
+
 ## Commands
 
 ```powershell
