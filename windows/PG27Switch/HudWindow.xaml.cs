@@ -1,8 +1,8 @@
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Forms = System.Windows.Forms;
+using WpfInput = System.Windows.Input;
 
 namespace PG27Switch;
 
@@ -63,9 +63,9 @@ public partial class HudWindow : Window
         HintText.Text = "DDC 写入失败";
     }
 
-    private void OnKeyDown(object sender, KeyEventArgs e)
+    private void OnKeyDown(object sender, WpfInput.KeyEventArgs e)
     {
-        if (e.Key == Key.Escape)
+        if (e.Key == WpfInput.Key.Escape)
         {
             CancelRequested?.Invoke();
         }
@@ -122,13 +122,13 @@ public partial class HudWindow : Window
 }
 
 internal sealed record HudPalette(
-    Brush PanelFill,
-    Brush Border,
-    Brush PrimaryText,
-    Brush SecondaryText,
-    Brush CancelText,
-    Brush Icon,
-    Brush Accent)
+    System.Windows.Media.Brush PanelFill,
+    System.Windows.Media.Brush Border,
+    System.Windows.Media.Brush PrimaryText,
+    System.Windows.Media.Brush SecondaryText,
+    System.Windows.Media.Brush CancelText,
+    System.Windows.Media.Brush Icon,
+    System.Windows.Media.Brush Accent)
 {
     public static HudPalette Current()
     {
