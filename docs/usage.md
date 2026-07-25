@@ -53,6 +53,7 @@ pg27switch --help
 | `--seconds N` | Countdown from 1 to 30 seconds. Default: 3. |
 | `--name NAME` | Custom name shown in the HUD. Required without an input alias. |
 | `--value VALUE` | Raw DDC value: 15, 17, 18, or 26. Required for real switching with `--name`. |
+| `--theme system\|dark\|light` | Follow macOS or force a HUD theme. Default: `system`. |
 | `--betterdisplay PATH` | Override the BetterDisplay executable path. |
 | `--help`, `-h` | Show help. |
 
@@ -61,6 +62,7 @@ Custom input example:
 ```bash
 pg27switch --name "HDMI 1" --value 17 --seconds 5
 pg27switch --preview --name "Office PC" --seconds 3
+pg27switch --preview dp --seconds 3 --theme dark
 ```
 
 For a custom BetterDisplay path:

@@ -11,10 +11,11 @@ final class HUDWindow: NSPanel {
     private let targetLabel = NSTextField(labelWithString: "")
     private let countdownLabel = NSTextField(labelWithString: "")
     private let hintLabel = NSTextField(labelWithString: "ESC 取消")
-    private let palette = HUDPalette.current()
+    private let palette: HUDPalette
     private var countdownHeightConstraint: NSLayoutConstraint?
 
-    init(screen: NSScreen, targetName: String) {
+    init(screen: NSScreen, targetName: String, theme: HUDTheme) {
+        self.palette = HUDPalette.current(theme)
         let size = NSSize(
             width: Self.hudSize.width + Self.shadowInset * 2,
             height: Self.hudSize.height + Self.shadowInset * 2
@@ -217,8 +218,16 @@ private struct HUDPalette {
     let gold: NSColor
     let bottomMark: NSColor
 
-    static func current() -> HUDPalette {
-        let isDark = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+    static func current(_ theme: HUDTheme) -> HUDPalette {
+        let isDark: Bool
+        switch theme {
+        case .dark:
+            isDark = true
+        case .light:
+            isDark = false
+        case .system:
+            isDark = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+        }
 
         if isDark {
             return HUDPalette(

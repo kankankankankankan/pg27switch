@@ -25,7 +25,7 @@ final class CountdownController {
 
         windows = NSScreen.screens.enumerated().map { index, screen in
             logger.write("Screen \(index): frame=\(screen.frame) visible=\(screen.visibleFrame)")
-            return HUDWindow(screen: screen, targetName: config.name)
+            return HUDWindow(screen: screen, targetName: config.name, theme: config.theme)
         }
 
         for (index, window) in windows.enumerated() {

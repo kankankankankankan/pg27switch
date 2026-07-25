@@ -12,7 +12,7 @@ The current Windows release is a self-contained x64 WPF executable. It supports 
 
 | Platform | DDC backend | Theme control |
 | --- | --- | --- |
-| macOS 12+ | BetterDisplay | macOS appearance |
+| macOS 12+ | BetterDisplay | `system`, `dark`, `light` |
 | Windows 11 | Windows Monitor Configuration API | `system`, `dark`, `light` |
 
 ## Download
@@ -60,6 +60,7 @@ Common parameters:
 | `--seconds N` | Countdown from 1 to 30 seconds. Default: 3. |
 | `--name NAME` | Custom name shown in the HUD. |
 | `--value VALUE` | Raw DDC value: 15, 17, 18, or 26. Required with `--name` for real switching. |
+| `--theme system\|dark\|light` | Follow macOS or Windows, or force a HUD theme. Default: `system`. |
 | `--help`, `-h` | Show command help. |
 | `--version`, `-v` | Show the program version. |
 
@@ -67,11 +68,10 @@ Windows-only parameters:
 
 | Parameter | Description |
 | --- | --- |
-| `--theme system\|dark\|light` | Follow Windows or force a HUD theme. |
 | `--list` | List physical monitors and current input values. |
 | `--monitor INDEX` | Select a monitor index from `--list`. |
 
-macOS uses BetterDisplay for DDC. Windows uses the Windows Monitor Configuration API directly. `--theme`, `--list`, and `--monitor` are Windows features.
+macOS uses BetterDisplay for DDC. Windows uses the Windows Monitor Configuration API directly. `--list` and `--monitor` are Windows features.
 
 ## Stream Deck
 
@@ -103,8 +103,8 @@ dotnet publish .\windows\PG27Switch\PG27Switch.csproj -c Release -r win-x64 --se
 Tagged pushes run GitHub Actions and publish both platform packages:
 
 ```bash
-git tag v1.3.16
-git push origin v1.3.16
+git tag v1.3.17
+git push origin v1.3.17
 ```
 
 ## Documentation

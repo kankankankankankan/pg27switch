@@ -6,6 +6,13 @@ struct SwitchConfig {
     let seconds: Int
     let previewOnly: Bool
     let betterDisplayPath: String
+    let theme: HUDTheme
+}
+
+enum HUDTheme {
+    case system
+    case light
+    case dark
 }
 
 private let inputAliases: [String: (name: String, value: Int)] = [
@@ -92,6 +99,9 @@ Options:
                              Range: 1 to 30.
                              Default: 3.
 
+  --theme THEME             HUD theme: system, light, or dark.
+                             Default: system.
+
   --preview                 Show the HUD only. BetterDisplay will not be called.
                              Useful for testing icons, layout, countdown, and ESC cancel.
                              With --preview, --value is optional.
@@ -107,6 +117,7 @@ Examples:
   pg27switch h1
   pg27switch --preview hdmi2
   pg27switch --input dp --seconds 5
+  pg27switch --preview dp --theme dark
   pg27switch --name "HDMI 1" --value 17
   pg27switch --preview --name "Custom Input"
   pg27switch hdmi1 --betterdisplay "/Applications/BetterDisplay.app/Contents/MacOS/BetterDisplay"
@@ -148,6 +159,7 @@ func parseArguments(_ args: [String]) throws -> SwitchConfig {
     var seconds = 3
     var previewOnly = false
     var betterDisplayPath = "/Applications/BetterDisplay.app/Contents/MacOS/BetterDisplay"
+    var theme = HUDTheme.system
     var shortcut: String?
 
     var index = 1
@@ -182,6 +194,19 @@ func parseArguments(_ args: [String]) throws -> SwitchConfig {
             index += 1
             guard index < args.count else { throw ArgumentError.missingValue(arg) }
             betterDisplayPath = args[index]
+        case "--theme":
+            index += 1
+            guard index < args.count else { throw ArgumentError.missingValue(arg) }
+            switch args[index].lowercased() {
+            case "system":
+                theme = .system
+            case "light":
+                theme = .light
+            case "dark":
+                theme = .dark
+            default:
+                throw ArgumentError.invalidValue(args[index])
+            }
         default:
             if arg.hasPrefix("-") {
                 throw ArgumentError.unknownArgument(arg)
@@ -218,6 +243,7 @@ func parseArguments(_ args: [String]) throws -> SwitchConfig {
         value: value,
         seconds: seconds,
         previewOnly: previewOnly,
-        betterDisplayPath: betterDisplayPath
+        betterDisplayPath: betterDisplayPath,
+        theme: theme
     )
 }

@@ -12,7 +12,7 @@
 
 | 平台 | DDC 后端 | 主题 |
 | --- | --- | --- |
-| macOS 12+ | BetterDisplay | 跟随 macOS 外观 |
+| macOS 12+ | BetterDisplay | `system`、`dark`、`light` |
 | Windows 11 | Windows Monitor Configuration API | `system`、`dark`、`light` |
 
 ## 下载
@@ -60,6 +60,7 @@ tc, typec, usb-c, usbc   Type-C       26
 | `--seconds N` | 倒计时 1 到 30 秒，默认 3 秒。 |
 | `--name NAME` | 自定义 HUD 中显示的名称。 |
 | `--value VALUE` | 原始 DDC 值：15、17、18、26。使用 `--name` 实际切换时必须提供。 |
+| `--theme system\|dark\|light` | 跟随系统或强制指定 HUD 主题，默认 `system`。 |
 | `--help`、`-h` | 显示帮助。 |
 | `--version`、`-v` | 显示版本。 |
 
@@ -67,11 +68,10 @@ Windows 专用参数：
 
 | 参数 | 说明 |
 | --- | --- |
-| `--theme system\|dark\|light` | 跟随 Windows 或强制指定 HUD 主题。 |
 | `--list` | 列出物理显示器和当前输入值。 |
 | `--monitor INDEX` | 使用 `--list` 中的显示器索引。 |
 
-macOS 通过 BetterDisplay 发送 DDC 命令，Windows 直接使用 Windows Monitor Configuration API。`--theme`、`--list`、`--monitor` 仅适用于 Windows。
+macOS 通过 BetterDisplay 发送 DDC 命令，Windows 直接使用 Windows Monitor Configuration API。`--list`、`--monitor` 仅适用于 Windows。
 
 ## Stream Deck
 
@@ -103,8 +103,8 @@ dotnet publish .\windows\PG27Switch\PG27Switch.csproj -c Release -r win-x64 --se
 推送版本 tag 会触发 GitHub Actions，同时构建 macOS 和 Windows：
 
 ```bash
-git tag v1.3.16
-git push origin v1.3.16
+git tag v1.3.17
+git push origin v1.3.17
 ```
 
 ## 文档
