@@ -19,6 +19,10 @@
 
 从 [GitHub Releases](https://github.com/kankankankankankan/pg27switch/releases) 下载 macOS 和 Windows 版本。
 
+## 效果展示
+
+![PG27UCDM 输入源切换 HUD](assets/demo-hud.png)
+
 ## 快速使用
 
 macOS：

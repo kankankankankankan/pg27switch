@@ -19,6 +19,10 @@ The current Windows release is a self-contained x64 WPF executable. It supports 
 
 Download the latest builds from the [GitHub Releases](https://github.com/kankankankankankan/pg27switch/releases) page.
 
+## Preview
+
+![PG27UCDM input switcher HUD](assets/demo-hud.png)
+
 ## Quick Use
 
 macOS:
