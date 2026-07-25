@@ -91,11 +91,44 @@ public partial class HudWindow : Window
     {
         Panel.Background = _palette.PanelFill;
         Panel.BorderBrush = _palette.Border;
-        TopAccent.Background = _palette.Accent;
+        HeaderFill.Background = _palette.HeaderFill;
+        TopAccent.Fill = _palette.Accent;
+        HeaderLine.Fill = _palette.QuietLine;
+        HeaderChevrons.Fill = _palette.Chevron;
+        MicroGrid.Stroke = _palette.MicroGrid;
+        GoldTicks.Stroke = _palette.Gold;
+        SideRail.Stroke = _palette.SideRail;
+        CornerLines.Stroke = _palette.CornerLine;
+        SetBottomStripColor(_palette.BottomMark);
         StatusText.Foreground = _palette.SecondaryText;
         TargetText.Foreground = _palette.PrimaryText;
         CountdownText.Foreground = _palette.PrimaryText;
         HintText.Foreground = _palette.SecondaryText;
+    }
+
+    private void SetBottomStripColor(WpfMedia.Brush brush)
+    {
+        foreach (var child in BottomStrip.Children)
+        {
+            switch (child)
+            {
+                case System.Windows.Controls.TextBlock textBlock:
+                    textBlock.Foreground = brush;
+                    break;
+                case System.Windows.Controls.Canvas canvas:
+                    foreach (var mark in canvas.Children)
+                    {
+                        switch (mark)
+                        {
+                            case Shape shape:
+                                shape.Fill = brush;
+                                shape.Stroke = brush;
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
     private void DrawIcon(string kind)
@@ -144,7 +177,15 @@ internal sealed record HudPalette(
     WpfMedia.Brush SecondaryText,
     WpfMedia.Brush CancelText,
     WpfMedia.Brush Icon,
-    WpfMedia.Brush Accent)
+    WpfMedia.Brush Accent,
+    WpfMedia.Brush HeaderFill,
+    WpfMedia.Brush QuietLine,
+    WpfMedia.Brush Chevron,
+    WpfMedia.Brush MicroGrid,
+    WpfMedia.Brush Gold,
+    WpfMedia.Brush SideRail,
+    WpfMedia.Brush CornerLine,
+    WpfMedia.Brush BottomMark)
 {
     public static HudPalette Current()
     {
@@ -156,21 +197,37 @@ internal sealed record HudPalette(
         var isLight = light is int value && value > 0;
         return isLight
             ? new HudPalette(
-                BrushFrom("#E6E7E4"),
-                BrushFrom("#A9ACA8"),
-                BrushFrom("#1D2022"),
-                BrushFrom("#5E6467"),
-                BrushFrom("#8F5F63"),
-                BrushFrom("#F1F0EA"),
-                BrushFrom("#9F2024"))
+                BrushFrom("#FAF2F2F3"),
+                BrushFrom("#4DBD0F14"),
+                BrushFrom("#E0131213"),
+                BrushFrom("#8C131213"),
+                BrushFrom("#DBB80F14"),
+                BrushFrom("#C7BD0F14"),
+                BrushFrom("#A3BD0F14"),
+                BrushFrom("#0FBD0F14"),
+                BrushFrom("#14000000"),
+                BrushFrom("#5EBD0F14"),
+                BrushFrom("#05000000"),
+                BrushFrom("#5CA88038"),
+                BrushFrom("#1DBD0F14"),
+                BrushFrom("#05000000"),
+                BrushFrom("#11000000"))
             : new HudPalette(
-                BrushFrom("#191B1C"),
-                BrushFrom("#404244"),
-                BrushFrom("#F2F2F0"),
-                BrushFrom("#B6B9BA"),
-                BrushFrom("#A8797D"),
-                BrushFrom("#F0EFE9"),
-                BrushFrom("#9F2024"));
+                BrushFrom("#FB0F0F10"),
+                BrushFrom("#75EB141C"),
+                BrushFrom("#F2FFFFFF"),
+                BrushFrom("#9EFFFFFF"),
+                BrushFrom("#EAEB141C"),
+                BrushFrom("#E0EB141C"),
+                BrushFrom("#DBEB141C"),
+                BrushFrom("#18EB141C"),
+                BrushFrom("#13FFFFFF"),
+                BrushFrom("#80EB141C"),
+                BrushFrom("#05FFFFFF"),
+                BrushFrom("#7AD1A85C"),
+                BrushFrom("#28EB141C"),
+                BrushFrom("#05FFFFFF"),
+                BrushFrom("#16FFFFFF"));
     }
 
     private static SolidColorBrush BrushFrom(string color)
