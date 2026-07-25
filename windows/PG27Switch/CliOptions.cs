@@ -6,8 +6,16 @@ internal sealed record CliOptions(
     bool ListOnly,
     int? MonitorIndex,
     int Seconds,
+    HudTheme Theme,
     bool ShowHelp,
     bool ShowVersion);
+
+internal enum HudTheme
+{
+    System,
+    Light,
+    Dark
+}
 
 internal static class CliParser
 {
@@ -35,6 +43,7 @@ Options:
   --name NAME              Custom input name shown in the HUD.
   --value VALUE            Raw DDC value for VCP 0x60.
   --seconds N              Countdown seconds, 1 to 30. Default: 3.
+  --theme THEME            HUD theme: system, light, or dark. Default: system.
   --preview                Show the HUD only and skip DDC switching.
   -v, --version            Show version.
   -h, --help               Show this help.
@@ -49,6 +58,7 @@ Options:
         var listOnly = false;
         int? monitorIndex = null;
         var seconds = 3;
+        var theme = HudTheme.System;
 
         for (var i = 0; i < args.Length; i++)
         {
@@ -57,10 +67,10 @@ Options:
             {
                 case "-h":
                 case "--help":
-                    return new CliOptions(null, false, false, null, seconds, true, false);
+                    return new CliOptions(null, false, false, null, seconds, theme, true, false);
                 case "-v":
                 case "--version":
-                    return new CliOptions(null, false, false, null, seconds, false, true);
+                    return new CliOptions(null, false, false, null, seconds, theme, false, true);
                 case "--preview":
                     previewOnly = true;
                     break;
@@ -86,6 +96,9 @@ Options:
                     {
                         throw new ArgumentException("--seconds must be between 1 and 30.");
                     }
+                    break;
+                case "--theme":
+                    theme = ParseTheme(RequireValue(args, ref i, arg));
                     break;
                 default:
                     if (arg.StartsWith('-'))
@@ -116,7 +129,7 @@ Options:
             throw new ArgumentException("Missing input.");
         }
 
-        return new CliOptions(source, previewOnly, listOnly, monitorIndex, seconds, false, false);
+        return new CliOptions(source, previewOnly, listOnly, monitorIndex, seconds, theme, false, false);
     }
 
     private static string RequireValue(string[] args, ref int index, string key)
@@ -154,5 +167,16 @@ Options:
             throw new ArgumentException($"Invalid value for {key}: {value}");
         }
         return parsed;
+    }
+
+    private static HudTheme ParseTheme(string value)
+    {
+        return value.ToLowerInvariant() switch
+        {
+            "system" => HudTheme.System,
+            "light" => HudTheme.Light,
+            "dark" => HudTheme.Dark,
+            _ => throw new ArgumentException($"Invalid theme: {value}. Use system, light, or dark.")
+        };
     }
 }

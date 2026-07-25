@@ -18,6 +18,8 @@ pg27switch.exe --monitor 1 dp
 pg27switch.exe --preview
 pg27switch.exe --preview hdmi1
 pg27switch.exe --preview dp --seconds 5
+pg27switch.exe --preview dp --seconds 3 --theme dark
+pg27switch.exe --preview dp --seconds 3 --theme light
 ```
 
 ## Input Values
@@ -62,3 +64,5 @@ Runtime logs are written to:
 ```text
 %LOCALAPPDATA%\PG27Switch\pg27switch.log
 ```
+
+Use `--theme system` to follow the Windows app theme, or select `--theme dark` and `--theme light` for Stream Deck buttons that should force a specific appearance.

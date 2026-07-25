@@ -13,12 +13,12 @@ public partial class HudWindow : Window
 
     private readonly HudPalette _palette;
 
-    public HudWindow(InputSource source, Forms.Screen screen)
+    public HudWindow(InputSource source, Forms.Screen screen, HudTheme theme)
     {
         InitializeComponent();
 
         ShowActivated = true;
-        _palette = HudPalette.Current();
+        _palette = HudPalette.Current(theme);
         ApplyPalette();
         TargetText.Text = source.Name;
         DrawIcon(source.IconKind);
@@ -189,14 +189,14 @@ internal sealed record HudPalette(
     WpfMedia.Brush CornerLine,
     WpfMedia.Brush BottomMark)
 {
-    public static HudPalette Current()
+    public static HudPalette Current(HudTheme theme)
     {
-        var light = Microsoft.Win32.Registry.GetValue(
-            @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
-            "AppsUseLightTheme",
-            0);
-
-        var isLight = light is int value && value > 0;
+        var isLight = theme switch
+        {
+            HudTheme.Light => true,
+            HudTheme.Dark => false,
+            _ => IsSystemLight()
+        };
         return isLight
             ? new HudPalette(
                 BrushFrom("#FAF2F2F3"),
@@ -232,6 +232,16 @@ internal sealed record HudPalette(
                 BrushFrom("#28EB141C"),
                 BrushFrom("#05FFFFFF"),
                 BrushFrom("#16FFFFFF"));
+    }
+
+    private static bool IsSystemLight()
+    {
+        var light = Microsoft.Win32.Registry.GetValue(
+            @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+            "AppsUseLightTheme",
+            0);
+
+        return light is int value && value > 0;
     }
 
     private static SolidColorBrush BrushFrom(string color)

@@ -37,7 +37,7 @@ internal static class Program
             }
 
             var source = options.Source ?? throw new ArgumentException("Missing input.");
-            AppLogger.Info($"Parsed source={source.Name}, value={source.Value}, preview={options.PreviewOnly}, seconds={options.Seconds}");
+            AppLogger.Info($"Parsed source={source.Name}, value={source.Value}, preview={options.PreviewOnly}, seconds={options.Seconds}, theme={options.Theme}");
             var app = new Wpf.Application
             {
                 ShutdownMode = Wpf.ShutdownMode.OnExplicitShutdown
@@ -90,7 +90,7 @@ internal sealed class CountdownRunner
         foreach (var screen in Forms.Screen.AllScreens)
         {
             AppLogger.Info($"Creating HUD for screen {screen.DeviceName}, bounds={screen.Bounds}, workingArea={screen.WorkingArea}");
-            var window = new HudWindow(_source, screen);
+            var window = new HudWindow(_source, screen, _options.Theme);
             window.CancelRequested += Cancel;
             _windows.Add(window);
             window.Show();
