@@ -36,7 +36,7 @@ Options:
   --value VALUE            Raw DDC value for VCP 0x60.
   --seconds N              Countdown seconds, 1 to 30. Default: 3.
   --preview                Show the HUD only and skip DDC switching.
-  --version                Show version.
+  -v, --version            Show version.
   -h, --help               Show this help.
 """;
 
@@ -58,6 +58,7 @@ Options:
                 case "-h":
                 case "--help":
                     return new CliOptions(null, false, false, null, seconds, true, false);
+                case "-v":
                 case "--version":
                     return new CliOptions(null, false, false, null, seconds, false, true);
                 case "--preview":

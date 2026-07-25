@@ -15,20 +15,17 @@ internal static class Program
             var options = CliParser.Parse(args);
             if (options.ShowHelp)
             {
-                ConsoleHelper.EnsureConsole();
                 Console.WriteLine(CliParser.Usage);
                 return 0;
             }
             if (options.ShowVersion)
             {
-                ConsoleHelper.EnsureConsole();
                 Console.WriteLine(AppVersion.Text);
                 return 0;
             }
 
             if (options.ListOnly)
             {
-                ConsoleHelper.EnsureConsole();
                 using var monitors = new MonitorCollection(DdcController.Enumerate());
                 foreach (var monitor in monitors.Items)
                 {
@@ -54,7 +51,6 @@ internal static class Program
         catch (Exception ex)
         {
             AppLogger.Error(ex);
-            ConsoleHelper.EnsureConsole();
             Console.Error.WriteLine(ex.Message);
             Console.Error.WriteLine();
             Console.Error.WriteLine(CliParser.Usage);
